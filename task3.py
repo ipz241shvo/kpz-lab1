@@ -1,30 +1,33 @@
 class Car:
     def __init__(self, brand, model, year, acceleration_step):
+        ## Публічні дані
         # Марка автомобіля
         self.brand = brand
         # Модель автомобіля
         self.model = model
         # Рік випуску
         self.year = year
+
+        ## Приватні поля стану
         # Поточна швидкість (початково 0)
-        self.speed = 0
+        self.__speed = 0
         # Крок прискорення (індивідуальний)
-        self.acceleration_step = acceleration_step
+        self.__acceleration_step = acceleration_step
 
     def accelerate(self):
         # Збільшує швидкість на індивідуальний крок
-        self.speed += self.acceleration_step
+        self.__speed += self.__acceleration_step
 
     def brake(self):
         # Зменшує швидкість на індивідуальний крок
-        self.speed -= self.acceleration_step
+        self.__speed -= self.__acceleration_step
         # Не дозволяємо швидкості бути від'ємною
-        if self.speed < 0:
-            self.speed = 0
+        if self.__speed < 0:
+            self.__speed = 0
 
     def get_speed(self):
         # Повертає поточну швидкість
-        return self.speed
+        return self.__speed
 
 # Приклад використання
 

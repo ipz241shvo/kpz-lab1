@@ -66,34 +66,35 @@ class RomanToDecimal:
         return total
 
 
+# -------- Ввід користувача --------
 
-# Допоміжні функції перевірки вводу
 def get_decimal_input():
     while True:
         value = input("Введіть десяткове число (1–3999): ").strip()
-
         if not value.isdigit():
             print("Помилка: потрібно ввести додатне ціле число.")
             continue
 
         number = int(value)
-        if not (1 <= number <= 3999):
-            print("Помилка: число має бути в діапазоні 1–3999.")
-            continue
+        if 1 <= number <= 3999:
+            return number
 
-        return number
+        print("Помилка: число має бути в діапазоні 1–3999.")
 
 
 def get_roman_input():
     while True:
         value = input("Введіть римське число: ").strip()
         try:
-            RomanToDecimal(value)  # тільки перевірка
+            RomanToDecimal(value)
             return value
         except ValueError as e:
             print("Помилка:", e)
 
-if __name__ == "__main__":
+
+# -------- Керування програмою --------
+
+def main():
     while True:
         print("\nОберіть режим:")
         print("1 — Десяткове → Римське")
@@ -104,13 +105,11 @@ if __name__ == "__main__":
 
         if choice == "1":
             number = get_decimal_input()
-            converter = DecimalToRoman(number)
-            print("Римське число:", converter.convert())
+            print("Римське число:", DecimalToRoman(number).convert())
 
         elif choice == "2":
             roman = get_roman_input()
-            converter = RomanToDecimal(roman)
-            print("Десяткове число:", converter.convert())
+            print("Десяткове число:", RomanToDecimal(roman).convert())
 
         elif choice == "0":
             print("Завершення програми.")
@@ -118,3 +117,7 @@ if __name__ == "__main__":
 
         else:
             print("Помилка: введіть 1, 2 або 0.")
+
+
+if __name__ == "__main__":
+    main()

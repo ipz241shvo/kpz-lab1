@@ -1,20 +1,42 @@
+# -------- Константи --------
+
+MIN_ROMAN_VALUE = 1
+MAX_ROMAN_VALUE = 3999
+
+ROMAN_MAP = [
+    (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+    (100, "C"), (90, "XC"), (50, "L"), (40, "XL"),
+    (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")
+]
+
+ROMAN_VALUES = {
+    "I": 1, "V": 5, "X": 10,
+    "L": 50, "C": 100,
+    "D": 500, "M": 1000
+}
+
+VALID_ROMAN_CHARS = {"I", "V", "X", "L", "C", "D", "M"}
+
+FORBIDDEN_REPEATS = ["IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM"]
+
+FORBIDDEN_SUBTRACTIONS = ["IL", "IC", "ID", "IM", "XD", "XM", "VX", "LC", "DM"]
+
+
+# -------- Логіка конвертації --------
+
 class DecimalToRoman:
     def __init__(self, number):
-        if not isinstance(number, int) or not (1 <= number <= 3999):
-            raise ValueError("Число має бути цілим у діапазоні 1–3999")
+        if not isinstance(number, int) or not (MIN_ROMAN_VALUE <= number <= MAX_ROMAN_VALUE):
+            raise ValueError(
+                f"Число має бути цілим у діапазоні {MIN_ROMAN_VALUE}–{MAX_ROMAN_VALUE}"
+            )
         self.number = number
 
     def convert(self):
-        roman_map = [
-            (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
-            (100, "C"), (90, "XC"), (50, "L"), (40, "XL"),
-            (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")
-        ]
-
         result = ""
         num = self.number
 
-        for value, symbol in roman_map:
+        for value, symbol in ROMAN_MAP:
             while num >= value:
                 result += symbol
                 num -= value
@@ -31,32 +53,23 @@ class RomanToDecimal:
         self._validate_roman()
 
     def _validate_roman(self):
-        valid_chars = {"I", "V", "X", "L", "C", "D", "M"}
-        if any(ch not in valid_chars for ch in self.roman):
+        if any(ch not in VALID_ROMAN_CHARS for ch in self.roman):
             raise ValueError("Римське число містить недопустимі символи")
 
-        forbidden_repeats = ["IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM"]
-        for seq in forbidden_repeats:
+        for seq in FORBIDDEN_REPEATS:
             if seq in self.roman:
                 raise ValueError("Некоректні повторення у римському числі")
 
-        forbidden_subtractions = ["IL", "IC", "ID", "IM", "XD", "XM", "VX", "LC", "DM"]
-        for seq in forbidden_subtractions:
+        for seq in FORBIDDEN_SUBTRACTIONS:
             if seq in self.roman:
                 raise ValueError("Некоректне правило віднімання у римському числі")
 
     def convert(self):
-        roman_values = {
-            "I": 1, "V": 5, "X": 10,
-            "L": 50, "C": 100,
-            "D": 500, "M": 1000
-        }
-
         total = 0
         prev = 0
 
         for ch in reversed(self.roman):
-            value = roman_values[ch]
+            value = ROMAN_VALUES[ch]
             if value < prev:
                 total -= value
             else:
@@ -70,16 +83,21 @@ class RomanToDecimal:
 
 def get_decimal_input():
     while True:
-        value = input("Введіть десяткове число (1–3999): ").strip()
+        value = input(
+            f"Введіть десяткове число ({MIN_ROMAN_VALUE}–{MAX_ROMAN_VALUE}): "
+        ).strip()
+
         if not value.isdigit():
             print("Помилка: потрібно ввести додатне ціле число.")
             continue
 
         number = int(value)
-        if 1 <= number <= 3999:
+        if MIN_ROMAN_VALUE <= number <= MAX_ROMAN_VALUE:
             return number
 
-        print("Помилка: число має бути в діапазоні 1–3999.")
+        print(
+            f"Помилка: число має бути в діапазоні {MIN_ROMAN_VALUE}–{MAX_ROMAN_VALUE}."
+        )
 
 
 def get_roman_input():
